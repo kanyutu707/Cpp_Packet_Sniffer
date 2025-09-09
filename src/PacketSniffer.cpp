@@ -31,7 +31,6 @@ bool PacketSniffer::startCapture() {
         return false;
     }
 
-    // Start capturing packets, pass 'this' pointer as user data
     if (pcap_loop(handle, 0, pcapCallback, reinterpret_cast<u_char*>(this)) == -1) {
         std::cerr << "Error during packet capture: " << pcap_geterr(handle) << std::endl;
         return false;
@@ -49,23 +48,19 @@ void PacketSniffer::stopCapture() {
     }
 }
 
-// Static callback called by libpcap for every captured packet
 void PacketSniffer::pcapCallback(u_char* args, const struct pcap_pkthdr* header, const u_char* packet) {
     auto* sniffer = reinterpret_cast<PacketSniffer*>(args);
 
-    // Parse Ethernet header (assuming Ethernet)
-    // Skip Ethernet header (usually 14 bytes)
     const int ethernet_header_length = 14;
 
     if (header->caplen < ethernet_header_length) {
-        // Packet too short
+  
         return;
     }
 
     const u_char* ip_packet = packet + ethernet_header_length;
     int ip_packet_len = header->caplen - ethernet_header_length;
 
-    // Parse IP header
     struct ip* ip_hdr = (struct ip*)ip_packet;
     if (ip_packet_len < sizeof(struct ip)) {
         return;
@@ -77,18 +72,15 @@ void PacketSniffer::pcapCallback(u_char* args, const struct pcap_pkthdr* header,
     info.protocol = ip_hdr->ip_p;
     info.size = header->len;
 
-    // Ports default to 0 if not TCP or UDP
     info.src_port = 0;
     info.dst_port = 0;
 
-    // TCP or UDP parsing
     if (ip_hdr->ip_p == IPPROTO_TCP) {
         const struct tcphdr* tcp_hdr = (struct tcphdr*)(ip_packet + ip_hdr->ip_hl * 4);
         if (ip_packet_len >= (ip_hdr->ip_hl * 4 + sizeof(struct tcphdr))) {
             info.src_port = ntohs(tcp_hdr->th_sport);
             info.dst_port = ntohs(tcp_hdr->th_dport);
 
-            // Extract HTTP data if any (assuming TCP payload after tcp header)
             int tcp_header_len = tcp_hdr->th_off * 4;
             int http_data_len = ip_packet_len - ip_hdr->ip_hl * 4 - tcp_header_len;
             if (http_data_len > 0) {
@@ -104,7 +96,6 @@ void PacketSniffer::pcapCallback(u_char* args, const struct pcap_pkthdr* header,
         }
     }
 
-    // Call the user-defined packet handler if set
     if (sniffer->packetHandler) {
         sniffer->packetHandler(info);
     }

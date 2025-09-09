@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <functional>   // <-- add this
+#include <functional>   
 #include <pcap/pcap.h>
 
 struct PacketInfo {
@@ -20,7 +20,6 @@ public:
     bool startCapture();
     void stopCapture();
 
-    // Change from function pointer to std::function:
     void setPacketHandler(std::function<void(const PacketInfo&)> handler) { packetHandler = handler; }
 
 private:
@@ -28,7 +27,7 @@ private:
     std::string filter;
     pcap_t* handle = nullptr;
     bpf_program fp{};
-    std::function<void(const PacketInfo&)> packetHandler = nullptr;  // <-- change here
+    std::function<void(const PacketInfo&)> packetHandler = nullptr;  
 
     static void pcapCallback(u_char* args, const struct pcap_pkthdr* header, const u_char* packet);
 };
