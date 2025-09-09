@@ -45,7 +45,8 @@ make
 ---
 
 ## Usage
-```sudo ./packet_sniffer <interface> <output.json> "<filter>"
+```bash
+sudo ./packet_sniffer <interface> <output.json> "<filter>"
 ```
 ---
 
