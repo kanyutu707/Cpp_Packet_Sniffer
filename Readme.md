@@ -32,32 +32,32 @@ Install dependencies on Ubuntu:
 ```bash
 sudo apt update
 sudo apt install build-essential cmake libpcap-dev pkg-config nlohmann-json3-dev
-
+```
 ---
 
 ## Building
 
-mkdir build
+```mkdir build
 cd build
 cmake ..
 make
-
+```
 ---
 
 ## Usage
-sudo ./packet_sniffer <interface> <output.json> "<filter>"
-
+```sudo ./packet_sniffer <interface> <output.json> "<filter>"
+```
 ---
 
 ## Running
-
+```
 sudo ./packet_sniffer eth0 packets.json "tcp or udp or icmp"
-
+```
 ---
 
 
 ## Output
-
+```
 {
   "src_ip": "192.168.1.10",
   "src_port": 443,
@@ -66,4 +66,5 @@ sudo ./packet_sniffer eth0 packets.json "tcp or udp or icmp"
   "protocol": 6,
   "size": 1500
 }
+```
 ---
