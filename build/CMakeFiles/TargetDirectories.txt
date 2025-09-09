@@ -1,3 +1,0 @@
-/home/kanyu/projects/packetsniffer/build/CMakeFiles/packet_sniffer.dir
-/home/kanyu/projects/packetsniffer/build/CMakeFiles/edit_cache.dir
-/home/kanyu/projects/packetsniffer/build/CMakeFiles/rebuild_cache.dir

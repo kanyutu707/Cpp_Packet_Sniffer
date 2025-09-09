@@ -46,7 +46,7 @@ make
 
 ## Usage
 ```bash
-sudo ./packet_sniffer <interface> <output.json> "<filter>"
+sudo ./packet_sniffer eth0 output.json "tcp or udp or icmp"
 ```
 ---
 
